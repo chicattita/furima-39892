@@ -41,6 +41,7 @@
 |-                   |-           |-                               |
 | id(PK)             | integer    | null: false, foreign_key: true |                   
 | user               | reference  | null: false, foreign_key: true |
+| items_id           | reference  | null: false, foreign_key: true |
 
 ### Association
 - has_one :address
@@ -54,7 +55,7 @@
 | Column             | Type       | Option                         |
 |-                   |-           |-                               |
 | postal_code        | string     | null: false                    |
-| prefecture         | integer    | null: false                    |
+| prefecture_id      | integer    | null: false                    |
 | city               | string     | null: false                    |
 | house_number       | string     | null: false                    |
 | building_name      | string     |                                |
