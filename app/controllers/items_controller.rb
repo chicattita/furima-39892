@@ -1,3 +1,4 @@
+# items_controller.rb
 class ItemsController < ApplicationController
   before_action :select_item, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
@@ -19,6 +20,9 @@ class ItemsController < ApplicationController
   end
 
   def show
+      @item
+    if @item.purchase
+    end
   end
 
   def edit
@@ -31,10 +35,13 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    return redirect_to root_path if @item.destroy
-
-    render 'show', status: :unprocessable_entity
-  end
+      if current_user == @item.user
+        @item.destroy
+        redirect_to root_path
+      else
+        redirect_to_show
+      end
+    end
 
   private
 

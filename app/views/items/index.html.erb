@@ -127,18 +127,18 @@
       新規投稿商品
     </div>
     <ul class='item-lists'>
-      <% if @items[0] != nil%>
+      <% if @items [0] != nil%>
       <% @items.each do |item|%>
       <li class='list'>
         <%= link_to item_path(item) do %>
-        <div class='item-img-content'>
-          <%= image_tag item.image, class: "item-img" %>
-          <%# sold outの表示 %>
-          <%# 購入済みの場合、条件分岐 %>
-          <div class='sold-out'>
-            <span>Sold Out!!</span>
-          </div>
-          <%# //購入済みの場合、条件分岐 %>
+          <div class='item-img-content'>
+           <%= image_tag item.image, class: "item-img" %>
+           <%# sold outの表示 %>
+           <% if item.order.present? %>
+             <div class='sold-out'>
+              <span>Sold Out!!</span>
+             </div>
+           <% end %>
           <%# //sold outの表示 %>
         </div>
         <div class='item-info'>

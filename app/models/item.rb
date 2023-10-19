@@ -1,5 +1,7 @@
+# item.rb
 class Item < ApplicationRecord
   belongs_to :user
+  has_one :order
   has_one_attached :image
 
   extend ActiveHash::Associations::ActiveRecordExtensions
@@ -26,5 +28,11 @@ class Item < ApplicationRecord
     validates :shipping_charge_id
     validates :shipping_date_id
     validates :prefecture_id
+  end
+
+ attribute :sold, :boolean, default: false
+
+  def purchase 
+    self.sold
   end
 end
