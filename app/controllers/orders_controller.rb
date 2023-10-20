@@ -1,7 +1,9 @@
 # orders_controller.rb
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_order, only: [:edit, :show]
   before_action :set_public_key, only: [:index, :create]
+  before_action :set_item, only: [:index, :create]
 
   def index
     @item = Item.find(params[:item_id])

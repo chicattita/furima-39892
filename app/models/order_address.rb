@@ -11,6 +11,8 @@ class OrderAddress
   end
   validates :prefecture, numericality: { other_than: 0, message: "can't be blank" }
   validates :city, :addresses, :phone_number, presence: true
+  validates :phone_number, presence: true, format: { with: /\A\d{10,11}\z/, message: 'は10桁または11桁の半角数値飲みを許可する' }
+
 
   def save
     # 購入情報を保存し、変数orderに代入する
