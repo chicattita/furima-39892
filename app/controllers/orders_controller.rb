@@ -7,9 +7,9 @@ class OrdersController < ApplicationController
     @item = Item.find(params[:item_id])
     @order_address = OrderAddress.new
 
-    redirect_to root_path unless @item.order.nil?
-
-    redirect_to root_path if current_user.id == @item.user.id
+     if @orde_address.nil? || current_user.id == @order_address.user.id
+       redirect_to root_path 
+     end
   end
 
   def create
