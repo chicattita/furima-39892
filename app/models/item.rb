@@ -30,9 +30,9 @@ class Item < ApplicationRecord
     validates :prefecture_id
   end
 
- attribute :sold, :boolean, default: false
+  attribute :sold, :boolean, default: false
 
-  def purchase 
-    self.sold
+  def purchase
+    sold
   end
 end

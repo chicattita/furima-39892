@@ -4,8 +4,8 @@ require 'rails_helper'
 RSpec.describe OrderAddress, type: :model do
   describe '購入情報の作成' do
     before do
-     user = FactoryBot.create(:user)
-     item = FactoryBot.create(:item)
+      user = FactoryBot.create(:user)
+      item = FactoryBot.create(:item)
       @order_address = FactoryBot.build(:order_address, item_id: item.id, user_id: user.id)
     end
 
@@ -20,12 +20,6 @@ RSpec.describe OrderAddress, type: :model do
     end
 
     context '内容に問題がある場合' do
-      it "creditが空では保存ができないこと" do
-        @order_address.credit = nil
-        @order_address.valid?
-        expect(@order_address.errors.full_messages).to include("credit can't be blank")      
-      end
-
       it 'postal_codeが空だと保存できないこと' do
         @order_address.postal_code = ''
         @order_address.valid?
@@ -35,40 +29,44 @@ RSpec.describe OrderAddress, type: :model do
       it 'postal_codeは、「3桁ハイフン4桁」の半角文字列のみ保存可能なこと' do
         @order_address.postal_code = '1234567'
         @order_address.valid?
-        expect(@order_address.errors.full_messages).to include('Postal code is invalid. Include hyphen(-)')     
+        expect(@order_address.errors.full_messages).to include('Postal code is invalid. Include hyphen(-)')
       end
 
       it 'prefectureが空だと保存できないこと' do
         @order_address.prefecture = nil
         @order_address.valid?
-        expect(@order_address.errors.full_messages).to include("Prefecture can't be blank")      
+        expect(@order_address.errors.full_messages).to include("Prefecture can't be blank")
       end
 
       it 'cityが空では保存ができないこと' do
         @order_address.city = ''
         @order_address.valid?
-        expect(@order_address.errors.full_messages).to include("City can't be blank")      
+        expect(@order_address.errors.full_messages).to include("City can't be blank")
       end
 
-      it "addressesが空では保存ができないこと" do
+      it 'addressesが空では保存ができないこと' do
         @order_address.addresses = ''
         @order_address.valid?
-        expect(@order_address.errors.full_messages).to include("Addresses can't be blank")      
+        expect(@order_address.errors.full_messages).to include("Addresses can't be blank")
       end
 
       it 'phone_numberが空では保存ができないこと' do
         @order_address.phone_number = ''
         @order_address.valid?
-        expect(@order_address.errors.full_messages).to include("Phone number can't be blank")      
+        expect(@order_address.errors.full_messages).to include("Phone number can't be blank")
       end
-    
+
       it 'userが紐付いていないと保存できないこと' do
         @order_address.user_id = nil
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("User can't be blank")
       end
+
+      it 'tokenが空では登録できないこと' do
+        @order_address.token = nil
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include("Token can't be blank")
+      end
     end
   end
-end    
-
-
+end
