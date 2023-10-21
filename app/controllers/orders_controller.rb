@@ -1,16 +1,15 @@
 # orders_controller.rb
 class OrdersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_order, only: [:edit, :show]
   before_action :set_public_key, only: [:index, :create]
-  before_action :set_item_and_order_address, only: [:index, :create]
+  before_action :set_item, only: [:index, :create]
 
   def index
     @order_address = OrderAddress.new
 
-     if @item.order.present? || current_user.id == @order_address.user.id
-       redirect_to root_path 
-     end
+    #  if @item.order.present? || current_user.id == @order_address.user.id
+    #    redirect_to root_path 
+    #  end
   end
 
   def create
@@ -27,6 +26,7 @@ class OrdersController < ApplicationController
       render :index, status: :unprocessable_entity
     end
   end
+  
 
   def new
   end

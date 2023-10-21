@@ -29,10 +29,4 @@ class Item < ApplicationRecord
     validates :shipping_date_id
     validates :prefecture_id
   end
-
-  attribute :sold, :boolean, default: false
-
-  def purchase
-    sold
-  end
 end

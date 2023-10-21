@@ -1,6 +1,5 @@
-# items_controller.rb
+# furima-39892¥app¥controllers¥items_controller.rb
 class ItemsController < ApplicationController
-  before_action :authenticate_user!
   before_action :select_item, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :redirect_to_show, only: [:edit, :update, :destroy]
@@ -24,13 +23,13 @@ class ItemsController < ApplicationController
   end
 
   def edit
-    @item = Item.find(params[:id])
+    # @item = Item.find(params[:id])
 
-    if @item.sold_out?
-      redirect_to root_path
-    elsif current_user.id != @item.user.id
-      redirect_to root_path
-    end
+    # if @item.sold_out?
+    #   redirect_to root_path
+    # elsif current_user.id != @item.user.id
+    #   redirect_to root_path
+    # end
   end
 
   def update
@@ -40,13 +39,17 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    if current_user == @item.user
-      @item.destroy
-      redirect_to root_path
-    else
-      redirect_to root_path
-    end
+    return redirect_to root_path if @item.destroy(item_params)
+
+    render 'edit', status: :unprocessable_entity
+    # if current_user == @item.user
+    #   @item.destroy
+    #   redirect_to root_path
+    # else
+    #   redirect_to root_path
+    # end
   end
+
 
   private
 
