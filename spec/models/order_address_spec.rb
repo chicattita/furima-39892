@@ -33,7 +33,7 @@ RSpec.describe OrderAddress, type: :model do
       end
 
       it 'prefectureが空だと保存できないこと' do
-        @order_address.prefecture = nil
+        @order_address.prefecture = '0'
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("Prefecture can't be blank")
       end
@@ -56,25 +56,24 @@ RSpec.describe OrderAddress, type: :model do
         expect(@order_address.errors.full_messages).to include("Phone number can't be blank")
       end
 
-      it '電話番号が10桁未満では登録できないこと' do
-        @order_address.phone_number = '123456789' # 9桁の電話番号
+      it 'phone_numberが10桁未満では登録できないこと' do
+        @order_address.phone_number = '090123456' # 9桁の電話番号
         @order_address.valid?
-        expect(@order_address.errors.full_messages).to include('Phone number is too short (minimum is 10 characters)')
+        expect(@order_address.errors.full_messages).to include('Phone number is invalid')
       end
       
-      it '電話番号が12桁以上では登録できないこと' do
+      it 'phone_numberが12桁以上では登録できないこと' do
         @order_address.phone_number = '1234567890123' # 12桁の電話番号
         @order_address.valid?
-        expect(@order_address.errors.full_messages).to include('Phone number is too long (maximum is 11 characters)')
+        expect(@order_address.errors.full_messages).to include('Phone number is invalid')
       end
       
-      it '電話番号に半角数字以外を含むと登録できないこと' do
+      it 'phone_numberに半角数字以外を含むと登録できないこと' do
         @order_address.phone_number = '12345678A9' # 半角数字以外（文字'A'を含む）
         @order_address.valid?
-        expect(@order_address.errors.full_messages).to include('Phone number is invalid. Only allow digits')
+        expect(@order_address.errors.full_messages).to include('Phone number is invalid')
       end
       
-
       it 'userが紐付いていないと保存できないこと' do
         @order_address.user_id = nil
         @order_address.valid?

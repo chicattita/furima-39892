@@ -7,12 +7,13 @@ class OrderAddress
     validates :user_id
     validates :item_id
     validates :postal_code, format: { with: /\A[0-9]{3}-[0-9]{4}\z/, message: 'is invalid. Include hyphen(-)' }
-    validates :token, presence: true
-  end
+    validates :token
+    validates :city, :addresses, :phone_number
+    # validates :phone_number, format: { with: /\A\d{10,11}\z/, message: 'phone number is invalid' }
+    validates :phone_number, format: { with: /\A\d{10,11}\z/, message: 'is invalid' }
+ end
   validates :prefecture, numericality: { other_than: 0, message: "can't be blank" }
-  validates :city, :addresses, :phone_number, presence: true
-  validates :phone_number, presence: true, format: { with: /\A\d{10,11}\z/, message: 'は10桁または11桁の半角数値飲みを許可する' }
-
+  
 
   def save
     # 購入情報を保存し、変数orderに代入する
@@ -20,8 +21,7 @@ class OrderAddress
     # order = Order.new(price: Price.find(item_id))
 
     # 住所を保存する
-    address = Address.create(postal_code:, prefecture:, city:, addresses:,
-                             building:, phone_number:, order_id:)
+    address = Address.create(item: Item.find(item_id), user: User.find(user_id))
     # order_idには、変数orderのidと指定する
     order.address = address
     # order.save

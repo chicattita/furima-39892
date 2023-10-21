@@ -21,12 +21,14 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
   end
 
   def edit
     @item = Item.find(params[:id])
-    if current_user.id != @item.user.id || @item.user.id
+
+    if @item.sold_out?
+      redirect_to root_path
+    elsif current_user.id != @item.user.id
       redirect_to root_path
     end
   end
