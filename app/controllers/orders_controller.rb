@@ -1,15 +1,15 @@
 # orders_controller.rb
 class OrdersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :set_order, only: [:edit, :show]
   before_action :set_public_key, only: [:index, :create]
-  before_action :set_item, only: [:index, :create]
 
   def index
-    @order_address = OrderAddress.new
+    @item = Item.find(params[:item_id])
+    @order_address = OrderAddress.new(user_id: current_user.id)
 
-    #  if @item.order.present? || current_user.id == @order_address.user.id
-    #    redirect_to root_path 
-    #  end
+    if @order_address.nil? || current_user.id == @order_address.user_id
+      redirect_to root_path 
+    end
   end
 
   def create
@@ -17,16 +17,15 @@ class OrdersController < ApplicationController
     @order_address = OrderAddress.new(order_params)
 
     if @order_address.valid?
-      pay_item
-      @order_address.save
+       pay_item
+       @order_address.save
 
-      redirect_to root_path
+       redirect_to root_path
     else
-      gon.public_key = ENV['PAYJP_PUBLIC_KEY']
-      render :index, status: :unprocessable_entity
+       gon.public_key = ENV['PAYJP_PUBLIC_KEY']
+       render :index, status: :unprocessable_entity
     end
   end
-  
 
   def new
   end
@@ -34,9 +33,8 @@ class OrdersController < ApplicationController
   private
 
   def order_params
-    params.require(:order_address).permit(:postal_code, :prefecture, :city, :addresses, :building, :phone_number).merge(
-      user_id: current_user.id, item_id: params[:item_id], token: params[:token]
-    )
+    params.require(:order_address).permit(:postal_code, :prefecture_id, :city, :addresses, :building, :phone_number).merge(
+      user_id: current_user.id, item_id: params[:item_id], token: params[:token])
   end
 
   def pay_item
@@ -46,10 +44,6 @@ class OrdersController < ApplicationController
       card: order_params[:token],
       currency: 'jpy'
     )
-  end
-
-  def set_item
-    @item = Item.find(params[:item_id])
   end
 
   def set_public_key

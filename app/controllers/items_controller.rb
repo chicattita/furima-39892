@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
   before_action :redirect_to_show, only: [:edit, :update, :destroy]
 
   def index
-    @items = Item.all.order(created_at: :desc)
+    @items = Item.all
   end
 
   def new
@@ -20,18 +20,13 @@ class ItemsController < ApplicationController
   end
 
   def show
+    @item = Item.find(params[:id])
   end
 
   def edit
-    # @item = Item.find(params[:id])
-
-    # if @item.sold_out?
-    #   redirect_to root_path
-    # elsif current_user.id != @item.user.id
-    #   redirect_to root_path
-    # end
+    @item = Item.find(params[:id])
   end
-
+   
   def update
     return redirect_to item_path(@item) if @item.update(item_params)
 
@@ -39,15 +34,12 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    return redirect_to root_path if @item.destroy(item_params)
-
-    render 'edit', status: :unprocessable_entity
-    # if current_user == @item.user
-    #   @item.destroy
-    #   redirect_to root_path
-    # else
-    #   redirect_to root_path
-    # end
+    if current_user == @item.user
+      @item.destroy
+      redirect_to root_path
+    else
+      redirect_to root_path
+    end
   end
 
 
