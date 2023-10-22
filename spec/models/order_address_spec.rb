@@ -33,7 +33,7 @@ RSpec.describe OrderAddress, type: :model do
       end
 
       it 'prefecture_idが空だと保存できないこと' do
-        @order_address.prefecture_id = ''
+        @order_address.prefecture_id = '0'
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("Prefecture can't be blank")
       end
@@ -84,6 +84,12 @@ RSpec.describe OrderAddress, type: :model do
         @order_address.token = nil
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("Token can't be blank")
+      end
+    
+      it 'itemが紐付いていないと保存できないこと' do
+        @order_address.item_id = nil
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include("Item can't be blank")
       end
     end
   end

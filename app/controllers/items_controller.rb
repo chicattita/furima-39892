@@ -64,7 +64,7 @@ class ItemsController < ApplicationController
   end
 
   def redirect_to_show
-    if current_user && current_user.id != @item.user.id && !@item.sold?
+    if current_user && current_user.id != @item.user.id || !@item.sold?
       redirect_to root_path 
     end
   end
