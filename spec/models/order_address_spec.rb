@@ -61,19 +61,19 @@ RSpec.describe OrderAddress, type: :model do
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include('Phone number is invalid')
       end
-      
+
       it 'phone_numberが12桁以上では登録できないこと' do
         @order_address.phone_number = '1234567890123' # 12桁の電話番号
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include('Phone number is invalid')
       end
-      
+
       it 'phone_numberに半角数字以外を含むと登録できないこと' do
         @order_address.phone_number = '12345678A9' # 半角数字以外（文字'A'を含む）
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include('Phone number is invalid')
       end
-      
+
       it 'userが紐付いていないと保存できないこと' do
         @order_address.user_id = nil
         @order_address.valid?
@@ -85,7 +85,7 @@ RSpec.describe OrderAddress, type: :model do
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("Token can't be blank")
       end
-    
+
       it 'itemが紐付いていないと保存できないこと' do
         @order_address.item_id = nil
         @order_address.valid?

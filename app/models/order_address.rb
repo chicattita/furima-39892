@@ -10,10 +10,8 @@ class OrderAddress
     validates :token
     validates :city, :addresses, :phone_number
     validates :phone_number, format: { with: /\A\d{10,11}\z/, message: 'is invalid' }
-    
- end
+  end
   validates :prefecture_id, numericality: { other_than: 0, message: "can't be blank" }
-  
 
   def save
     # 購入情報を保存し、変数orderに代入する
@@ -25,5 +23,3 @@ class OrderAddress
     order.address = address
   end
 end
-
-

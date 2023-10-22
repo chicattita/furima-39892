@@ -20,13 +20,11 @@ class ItemsController < ApplicationController
   end
 
   def show
- 
   end
 
   def edit
-    
   end
-   
+
   def update
     return redirect_to item_path(@item) if @item.update(item_params)
 
@@ -41,7 +39,6 @@ class ItemsController < ApplicationController
       redirect_to root_path
     end
   end
-
 
   private
 
@@ -64,8 +61,8 @@ class ItemsController < ApplicationController
   end
 
   def redirect_to_show
-    if current_user && current_user.id != @item.user.id || !@item.sold?
-      redirect_to root_path 
-    end
+    return unless current_user && current_user.id != @item.user.id || !@item.sold?
+
+    redirect_to root_path
   end
 end
