@@ -1,19 +1,18 @@
 # orders_controller.rb
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:edit, :show]
+  before_action :set_order, only: [:index, :create]
   before_action :set_public_key, only: [:index, :create]
+  before_action :load_item, only: [:index, :create]
 
   def index
-    @item = Item.find(params[:item_id])
     @order_address = OrderAddress.new(user_id: current_user.id)
 
-    if @order_address.nil? || current_user.id == @order_address.user_id
+    if current_user.id == @order_address.user_id || @order_address.nil?
       redirect_to root_path 
     end
   end
 
   def create
-    @item = Item.find(params[:item_id])
     @order_address = OrderAddress.new(order_params)
 
     if @order_address.valid?
@@ -48,5 +47,9 @@ class OrdersController < ApplicationController
 
   def set_public_key
     gon.public_key = ENV['PAYJP_PUBLIC_KEY']
+  end
+
+  def load_item
+    @item = Item.find(params[:item_id])
   end
 end

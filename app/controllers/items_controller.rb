@@ -5,7 +5,7 @@ class ItemsController < ApplicationController
   before_action :redirect_to_show, only: [:edit, :update, :destroy]
 
   def index
-    @items = Item.all
+    @items = Item.all.order(created_at: :desc)
   end
 
   def new
@@ -20,11 +20,11 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
+ 
   end
 
   def edit
-    @item = Item.find(params[:id])
+    
   end
    
   def update
@@ -64,6 +64,8 @@ class ItemsController < ApplicationController
   end
 
   def redirect_to_show
-    redirect_to root_path if current_user.id != @item.user.id
+    if current_user && current_user.id != @item.user.id && !@item.sold?
+      redirect_to root_path 
+    end
   end
 end
