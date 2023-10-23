@@ -15,8 +15,8 @@ FactoryBot.define do
     end
 
     trait :sold_out do
-      after(:create) do |item|
-        create(:order, item:, user: create(:user))
+      after(:create) do |_item|
+        create(:order, :item, user: create(:user))
       end
     end
   end

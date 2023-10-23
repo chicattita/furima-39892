@@ -1,3 +1,4 @@
+# furima-39892¥app¥controllers¥items_controller.rb
 class ItemsController < ApplicationController
   before_action :select_item, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
@@ -31,9 +32,12 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    return redirect_to root_path if @item.destroy
-
-    render 'show', status: :unprocessable_entity
+    if current_user == @item.user
+      @item.destroy
+      redirect_to root_path
+    else
+      redirect_to root_path
+    end
   end
 
   private
@@ -57,6 +61,8 @@ class ItemsController < ApplicationController
   end
 
   def redirect_to_show
-    redirect_to root_path if current_user.id != @item.user.id
+    return unless current_user && current_user.id != @item.user.id || !@item.sold?
+
+    redirect_to root_path
   end
 end
