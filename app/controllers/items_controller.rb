@@ -32,7 +32,7 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    if current_user == @item.user
+    if user_signed_in? && current_user == @item.user
       @item.destroy
       redirect_to root_path
     else
@@ -61,8 +61,8 @@ class ItemsController < ApplicationController
   end
 
   def redirect_to_show
-    return unless current_user && current_user.id != @item.user.id || !@item.sold?
-
+    if current_user != @item.user || @item.order.present?
     redirect_to root_path
+    end
   end
 end
